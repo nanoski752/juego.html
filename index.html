@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¿Qué tanto sabes de Pentecostés?</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom right, #d32f2f, #ffccbc);
+      font-family: 'Segoe UI', sans-serif;
+      height: 100vh;
+      color: white;
+      text-align: center;
+    }
+
+    .header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px 20px;
+      font-size: 0.9em;
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 30px;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      margin-top: 60px;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 20px;
+    }
+
+    button, .option {
+      padding: 12px 24px;
+      font-size: 1em;
+      background-color: white;
+      color: #d32f2f;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px 0;
+      transition: 0.3s ease;
+    }
+
+    button:hover, .option:hover {
+      background-color: #ffcdd2;
+    }
+
+    .question {
+      font-size: 1.3em;
+      margin-bottom: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <span>Mariano Jiménez &nbsp;|&nbsp; Valentín Carandino</span>
+  </div>
+
+  <div class="container">
+    <h1>¿Qué tanto sabes de Pentecostés?</h1>
+    <div id="start">
+      <button onclick="startQuiz()">Comenzar</button>
+    </div>
+
+    <div id="quiz" class="hidden">
+      <div id="question-container"></div>
+      <div id="result"></div>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "¿Cuántos días después de la Pascua se celebra Pentecostés?",
+        options: ["50 días", "40 días"],
+        answer: 0
+      },
+      {
+        question: "¿Qué símbolo se asocia comúnmente con la venida del Espíritu Santo en Pentecostés?",
+        options: ["Paloma", "Lenguas de fuego"],
+        answer: 1
+      },
+      {
+        question: "¿Qué hicieron los apóstoles después de recibir el Espíritu Santo?",
+        options: ["Fueron al desierto a orar", "Empezaron a predicar en diferentes lenguas"],
+        answer: 1
+      },
+      {
+        question: "¿En qué libro de la Biblia se relata Pentecostés?",
+        options: ["Hechos de los Apóstoles", "Evangelio de Juan"],
+        answer: 0
+      },
+      {
+        question: "¿Qué sentimiento principal sintieron los apóstoles tras recibir el Espíritu Santo?",
+        options: ["Temor", "Valentía"],
+        answer: 1
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function startQuiz() {
+      document.getElementById('start').classList.add('hidden');
+      document.getElementById('quiz').classList.remove('hidden');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const container = document.getElementById('question-container');
+      container.innerHTML = '';
+
+      if (currentQuestion < questions.length) {
+        const q = questions[currentQuestion];
+        const questionElem = document.createElement('div');
+        questionElem.classList.add('question');
+        questionElem.textContent = q.question;
+        container.appendChild(questionElem);
+
+        q.options.forEach((option, index) => {
+          const btn = document.createElement('button');
+          btn.classList.add('option');
+          btn.textContent = option;
+          btn.onclick = () => {
+            if (index === q.answer) {
+              score++;
+            }
+            currentQuestion++;
+            showQuestion();
+          };
+          container.appendChild(btn);
+        });
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      const container = document.getElementById('question-container');
+      container.innerHTML = '';
+      const result = document.getElementById('result');
+      result.innerHTML = `Obtuviste <strong>${score}</strong> de <strong>${questions.length}</strong> respuestas correctas.`;
+
+      let mensaje = "";
+      if (score === 5) {
+        mensaje = "¡Excelente! Eres todo un experto en Pentecostés. 🔥";
+      } else if (score >= 3) {
+        mensaje = "¡Muy bien! Pero aún puedes aprender más. 🙌";
+      } else {
+        mensaje = "¡Buen intento! Te invito a seguir aprendiendo. 📖";
+      }
+      result.innerHTML += `<p>${mensaje}</p>`;
+    }
+  </script>
+</body>
+</html>
